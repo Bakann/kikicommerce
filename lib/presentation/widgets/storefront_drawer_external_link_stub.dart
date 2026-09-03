@@ -1,0 +1,1 @@
+void openStorefrontDrawerExternalLink(String url) {}

@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kiki-ct-catalog-proxy",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-01",
+  "vars": {
+    "CT_PROJECT_KEY": "kiki",
+    "CT_API_URL": "https://api.europe-west1.gcp.commercetools.com",
+    "CT_AUTH_URL": "https://auth.europe-west1.gcp.commercetools.com",
+    "CT_SCOPE": "view_published_products:kiki view_categories:kiki",
+    "CT_LOCALE_PROJECTION": "en-GB",
+    "CT_PRICE_CURRENCY": "EUR",
+    // Temporary lab setting: the commercetools sample data only has EUR prices
+    // scoped to DE, so EUR/FR projects no price. DE matches the existing EUR
+    // sample price. Long-term for a French storefront: add EUR/FR prices in
+    // commercetools and switch this back to "FR". See
+    // docs/price-projection-investigation.md.
+    "CT_PRICE_COUNTRY": "DE",
+    "ALLOWED_ORIGINS": "https://kikicommerce.com,https://www.kikicommerce.com,http://localhost:3000",
+    // LAB-ONLY image optimisation. The commercetools sample images are ~4 MB GCS
+    // originals; the Worker rewrites PLP/PDP image URLs through the weserv resize
+    // proxy to avoid scroll jank. This is NOT a production image pipeline (it
+    // sends image URLs to a third party) — replace with Cloudflare Image
+    // Resizing or an owned pipeline before any non-lab use. Set
+    // CT_IMAGE_RESIZE_MODE=none to disable. See docs/dev/commercetools_lab.md.
+    "CT_IMAGE_RESIZE_MODE": "weserv",
+    "CT_IMAGE_WIDTH": "600",
+    "CT_IMAGE_QUALITY": "75",
+    "CT_IMAGE_FORMAT": "webp",
+    "CT_DETAIL_IMAGE_WIDTH": "1280"
+  }
+}

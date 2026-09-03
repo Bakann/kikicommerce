@@ -1,0 +1,98 @@
+import 'dart:typed_data';
+
+import 'package:crop_your_image/src/widget/crop.dart';
+import 'package:flutter/widgets.dart';
+
+typedef ScaleChangeRequest = ({double delta, Offset? focalPoint});
+
+/// Controller to control crop actions.
+class CropController {
+  late CropControllerDelegate _delegate;
+
+  /// setter for [CropControllerDelegate]
+  set delegate(CropControllerDelegate value) => _delegate = value;
+
+  /// crop given image with current configuration
+  void crop() => _delegate.onCrop(false);
+
+  /// crop given image with current configuration and circle shape.
+  void cropCircle() => _delegate.onCrop(true);
+
+  /// Change image to be cropped.
+  /// When image is changed, [Rect] of cropping area will be reset.
+  set image(Uint8List value) => _delegate.onImageChanged(value);
+
+  /// change fixed aspect ratio
+  /// if [value] is null, cropping area can be moved without fixed aspect ratio.
+  set aspectRatio(double? value) => _delegate.onChangeAspectRatio(value);
+
+  /// change if cropping with circle shaped UI.
+  /// if [value] is true, [aspectRatio] automatically fixed with 1
+  set withCircleUi(bool value) => _delegate.onChangeWithCircleUi(value);
+
+  /// change [ViewportBasedRect] of crop rect.
+  /// the value is corrected if it indicates outside of the image.
+  set cropRect(ViewportBasedRect value) => _delegate.onChangeCropRect(value);
+
+  /// change [ViewportBasedRect] of crop rect
+  /// based on [ImageBasedRect] of original image.
+  set area(ImageBasedRect value) => _delegate.onChangeArea(value);
+
+  /// request incremental image zoom in interactive mode.
+  void addScale(double delta, {Offset? focalPoint}) =>
+      _delegate.onChangeScale((delta: delta, focalPoint: focalPoint));
+
+  /// request undo
+  void undo() => _delegate.onUndo();
+
+  /// request redo
+  void redo() => _delegate.onRedo();
+
+  /// Reset crop editor: centers the image, clears undo/redo history, and
+  /// resets zoom to minimum.
+  ///
+  /// If [aspectRatio] is provided, the crop rect is re-initialized at the
+  /// memorized initial size with the given ratio, and the ratio is persisted
+  /// into the view state. This is the "change preset" semantic, safe to call
+  /// right after a parent [setState] (no stale-widget dependency).
+  ///
+  /// If [aspectRatio] is null, the cached [InitialRectBuilder] from the
+  /// first setup is replayed exactly, supporting [WithSizeAndRatio],
+  /// [WithArea], and [WithBuilder] variants. This is the "true reset to
+  /// initial state" semantic.
+  void reset({double? aspectRatio}) => _delegate.onReset(aspectRatio);
+}
+
+/// Delegate of actions from [CropController]
+class CropControllerDelegate {
+  /// callback that [CropController.crop] is called.
+  /// the meaning of the value is if cropping a image with circle shape.
+  late ValueChanged<bool> onCrop;
+
+  /// callback that [CropController.image] is set.
+  late ValueChanged<Uint8List> onImageChanged;
+
+  /// callback that [CropController.aspectRatio] is set.
+  late ValueChanged<double?> onChangeAspectRatio;
+
+  /// callback that [CropController.withCircleUi] is changed.
+  late ValueChanged<bool> onChangeWithCircleUi;
+
+  /// callback that [CropController.cropRect] is changed.
+  late ValueChanged<ViewportBasedRect> onChangeCropRect;
+
+  /// callback that [CropController.area] is changed.
+  late ValueChanged<ImageBasedRect> onChangeArea;
+
+  /// callback that [CropController.addScale] is called.
+  late ValueChanged<ScaleChangeRequest> onChangeScale;
+
+  /// callback that [CropController.undo] is called.
+  late VoidCallback onUndo;
+
+  /// callback that [CropController.redo] is called.
+  late VoidCallback onRedo;
+
+  /// callback that [CropController.reset] is called.
+  late ValueChanged<double?> onReset;
+}

@@ -1,0 +1,13 @@
+name = "kiki-commerce-media-proxy"
+main = "src/index.js"
+compatibility_date = "2026-05-07"
+
+# TODO: confirm the Cloudflare zone if the storefront remains hosted elsewhere.
+routes = [
+  { pattern = "kikicommerce.com/img/*", zone_name = "kikicommerce.com" }
+]
+
+# PocketBase origin proxied by the Worker. Override per environment with
+# `wrangler deploy --var ORIGIN=https://...` if needed.
+[vars]
+ORIGIN = "https://kiki-commerce.pockethost.io"

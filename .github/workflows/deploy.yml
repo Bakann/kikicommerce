@@ -1,0 +1,84 @@
+name: Deploy Flutter Web to Cloudflare Pages
+
+on:
+  workflow_run:
+    workflows: ["Quality Gate"]
+    types:
+      - completed
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          # Pinned to match the Quality Gate / dev environment so the
+          # deployed web build uses the same SDK the code is verified
+          # against. Bump deliberately alongside an SDK upgrade.
+          flutter-version: 3.44.4
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Flutter Web
+        # Renderer: skwasm (`--wasm` = dart2wasm + skwasm). The CanvasKit build
+        # (dart2js) janked app-wide on this shader/particle/animation-heavy app,
+        # so we reverted to skwasm for runtime performance.
+        # KNOWN TRADE-OFF: skwasm re-introduces the 2026-07 empty-PLP → Home
+        # freeze (`memory access out of bounds` in `SkwasmParagraph` under
+        # relayout). It is an accepted, still-open risk pending a skwasm-side fix
+        # (Flutter upgrade / targeted workaround), NOT resolved by this build.
+        # See docs/incidents/2026-07-09-skwasm-paragraph-relayout-freeze.md.
+        run: |
+          flutter build web --release --wasm \
+            --dart-define=API_BASE_URL=https://kiki-commerce.pockethost.io \
+            --dart-define=MEDIA_BASE_URL=https://kikicommerce.com/img \
+            --dart-define=CT_CATALOG_PROXY_URL=https://kiki-ct-catalog-proxy.herocospo.workers.dev
+
+      - name: Add SPA redirects
+        run: echo "/*    /index.html   200" > build/web/_redirects
+
+      - name: Deploy to Cloudflare Pages
+        # --branch main is required because workflow_run runs in a detached
+        # context; without it Cloudflare classifies the deploy as Preview/HEAD.
+        # The asset-upload endpoint occasionally returns a transient 5xx
+        # (HTML error page instead of JSON). The deploy is idempotent —
+        # already-uploaded assets are skipped by content hash — so we retry.
+        run: |
+          for attempt in 1 2 3; do
+            echo "::group::Cloudflare deploy attempt ${attempt}"
+            if npx --yes wrangler@4.94.0 pages deploy build/web \
+                --project-name kikicommerce --branch main --commit-dirty=true; then
+              echo "::endgroup::"
+              exit 0
+            fi
+            echo "::endgroup::"
+            echo "Deploy attempt ${attempt} failed."
+            if [ "${attempt}" -lt 3 ]; then
+              echo "Retrying in $((attempt * 15))s..."
+              sleep $((attempt * 15))
+            fi
+          done
+          echo "All deploy attempts failed."
+          exit 1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -1,0 +1,19 @@
+{
+  "name": "kiki-ct-catalog-proxy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test --import tsx \"test/*.test.ts\"",
+    "probe:prices": "tsx scripts/probe-prices.ts",
+    "typecheck": "tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --lib ES2022 --types @cloudflare/workers-types src/index.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260523.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.18.0"
+  }
+}

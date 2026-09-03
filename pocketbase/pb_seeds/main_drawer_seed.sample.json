@@ -1,0 +1,146 @@
+{
+  "menu": {
+    "code": "main_drawer",
+    "name": "Main drawer",
+    "displayMode": "drawer",
+    "isActive": true
+  },
+  "items": [
+    {
+      "key": "gifts",
+      "parentKey": null,
+      "position": 10,
+      "label": "Cadeaux",
+      "itemType": "page",
+      "pageKey": "gifts",
+      "placement": "nav",
+      "desktopDrawerTemplate": "promo_grid_2x2"
+    },
+    {
+      "key": "gifts_discover",
+      "parentKey": "gifts",
+      "position": 10,
+      "label": "Découvrez les cadeaux",
+      "itemType": "page",
+      "pageKey": "gifts_discover",
+      "placement": "nav"
+    },
+    {
+      "key": "gifts_her",
+      "parentKey": "gifts",
+      "position": 20,
+      "label": "Cadeaux pour elle",
+      "itemType": "category",
+      "categoryCode": "gifts_for_her",
+      "placement": "promo",
+      "promoMediaCode": "drawer-gifts-her"
+    },
+    {
+      "key": "gifts_him",
+      "parentKey": "gifts",
+      "position": 30,
+      "label": "Cadeaux pour lui",
+      "itemType": "category",
+      "categoryCode": "gifts_for_him",
+      "placement": "promo",
+      "promoMediaCode": "drawer-gifts-him"
+    },
+    {
+      "key": "gifts_birth",
+      "parentKey": "gifts",
+      "position": 40,
+      "label": "Cadeaux naissance",
+      "itemType": "category",
+      "categoryCode": "gifts_birth",
+      "placement": "promo",
+      "promoMediaCode": "drawer-gifts-birth"
+    },
+    {
+      "key": "gifts_home",
+      "parentKey": "gifts",
+      "position": 50,
+      "label": "Cadeaux maison",
+      "itemType": "category",
+      "categoryCode": "gifts_home",
+      "placement": "promo",
+      "promoMediaCode": "drawer-gifts-home"
+    },
+    {
+      "key": "haute_couture",
+      "parentKey": null,
+      "position": 20,
+      "label": "Haute couture",
+      "itemType": "page",
+      "pageKey": "haute_couture",
+      "placement": "nav",
+      "desktopDrawerTemplate": "hero_single"
+    },
+    {
+      "key": "haute_couture_discover",
+      "parentKey": "haute_couture",
+      "position": 10,
+      "label": "Découvrez la haute couture",
+      "itemType": "page",
+      "pageKey": "haute_couture_discover",
+      "placement": "nav"
+    },
+    {
+      "key": "haute_couture_ss26",
+      "parentKey": "haute_couture",
+      "position": 20,
+      "label": "Défilé printemps-été 2026",
+      "itemType": "page",
+      "pageKey": "haute_couture_ss26",
+      "placement": "promo",
+      "promoMediaCode": "drawer-haute-couture-ss26"
+    },
+    {
+      "key": "women",
+      "parentKey": null,
+      "position": 30,
+      "label": "Mode femme",
+      "itemType": "page",
+      "pageKey": "women",
+      "placement": "nav",
+      "desktopDrawerTemplate": "promo_stack_2"
+    },
+    {
+      "key": "women_ready_to_wear",
+      "parentKey": "women",
+      "position": 10,
+      "label": "Prêt-à-porter",
+      "itemType": "category",
+      "categoryCode": "women_ready_to_wear",
+      "placement": "nav"
+    },
+    {
+      "key": "women_bags",
+      "parentKey": "women",
+      "position": 20,
+      "label": "Sacs",
+      "itemType": "category",
+      "categoryCode": "women_bags",
+      "placement": "nav"
+    },
+    {
+      "key": "women_ss26",
+      "parentKey": "women",
+      "position": 30,
+      "label": "Printemps-Été 2026",
+      "itemType": "page",
+      "pageKey": "women_ss26",
+      "placement": "promo",
+      "promoMediaCode": "drawer-women-ss26"
+    },
+    {
+      "key": "women_all",
+      "parentKey": "women",
+      "position": 40,
+      "label": "Tout le prêt-à-porter",
+      "itemType": "page",
+      "pageKey": "women_all_ready_to_wear",
+      "placement": "promo",
+      "promoMediaCode": "drawer-women-all"
+    }
+  ]
+}

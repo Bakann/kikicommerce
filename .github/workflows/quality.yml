@@ -1,0 +1,141 @@
+name: Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flutter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          # Pinned to the dev environment's Flutter so `flutter analyze`
+          # results match locally. `channel: stable` floats, so bump this
+          # deliberately alongside SDK upgrades.
+          flutter-version: 3.44.4
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify generated localizations are up to date
+        # The generated AppLocalizations under lib/l10n/ is committed; fail the
+        # gate if an .arb changes without re-running `flutter gen-l10n`.
+        run: |
+          flutter gen-l10n
+          git diff --exit-code lib/l10n
+
+      - name: Analyze
+        # Treat infos/warnings as failures so lint regressions block the gate
+        # rather than accumulating silently. The tree is clean today; keep it
+        # so. Bump deliberately alongside an SDK upgrade if new lints appear.
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Guard public localization strings
+        run: dart run scripts/check_public_l10n_strings.dart
+
+      - name: Architecture guard - no ApiConfig in presentation
+        run: |
+          if grep -RInE "config/api_config\.dart|ApiConfig\.(apiBaseUrl|mediaBaseUrl)|pb\.files\.getUrl" lib/presentation; then
+            echo "::error::Presentation layer must read API/media base URLs through providers"
+            exit 1
+          fi
+
+      - name: Architecture guard - no data backend imports in presentation
+        # Presentation must depend on application abstractions, not concrete
+        # PocketBase repositories or the raw API client. (data/local stores hold
+        # client-side visitor state and are intentionally allowed.) Repository
+        # providers live in app_providers.dart.
+        run: |
+          if grep -RInE "import .*data/(repositories|api)/" lib/presentation; then
+            echo "::error::Presentation must consume repositories via app_providers, not import data/repositories or data/api directly"
+            exit 1
+          fi
+
+      - name: Guard AGENTS.md ↔ CLAUDE.md stay identical
+        # Codex reads AGENTS.md, Claude Code reads CLAUDE.md. AGENTS.md is a
+        # symlink to CLAUDE.md so the rules cannot diverge; fail the gate if the
+        # symlink is broken or replaced by a regular file.
+        run: |
+          if [ "$(readlink AGENTS.md)" != "CLAUDE.md" ]; then
+            echo "::error::AGENTS.md must stay a symlink to CLAUDE.md so Codex and Claude Code read identical rules"
+            exit 1
+          fi
+
+      - name: Test
+        run: flutter test
+
+      - name: Format check
+        run: dart format --output=none --set-exit-if-changed lib test pocketbase cloudflare
+
+      - name: Dependency freshness (advisory)
+        # Non-blocking: surfaces outdated/incompatible packages in the log so
+        # upgrades are a deliberate choice, without failing the gate on the
+        # normal drift of a fast-moving Flutter ecosystem.
+        continue-on-error: true
+        run: flutter pub outdated
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history so the scan covers every committed revision, not just
+          # the tip — a secret added then "removed" still lives in history.
+          fetch-depth: 0
+
+      - name: Scan for committed secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  worker:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cloudflare/media-proxy-worker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Worker syntax
+        run: node --check src/index.js
+
+  pocketbase-hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # cart_add_item.js is the canonical source for the cart hook logic;
+      # main.pb.js delegates to it (cf. P3-2). The clear-cart hook follows the
+      # same pure-logic pattern. ubuntu-latest ships Node ≥ 20,
+      # which natively supports node:test, so no setup-node step is needed.
+      - name: Test PocketBase cart hook logic
+        run: node --test test/pocketbase/cart_add_item_hook_test.js test/pocketbase/cart_clear_hook_test.js
+
+      # pb_lib/storefront_settings_dedup.js is mirrored by migration
+      # 1777000560 (PB's migration JSVM doesn't do cross-dir require).
+      # The first run covers the validation/dedup logic; the second
+      # asserts the two copies haven't drifted.
+      - name: Test storefront_settings dedup logic
+        run: node --test test/pocketbase/storefront_settings_dedup_test.js
+      - name: Guard storefront_settings dedup drift
+        run: node --test test/pocketbase/storefront_settings_dedup_sync_test.js

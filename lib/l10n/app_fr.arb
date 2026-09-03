@@ -1,0 +1,507 @@
+{
+  "@@locale": "fr",
+
+  "appTitle": "Kiki's Commerce",
+  "@appTitle": {
+    "description": "Application title shown in the browser tab / app switcher."
+  },
+
+  "commonClose": "Fermer",
+  "@commonClose": {
+    "description": "Generic close action (drawer close header)."
+  },
+  "commonContact": "Contact",
+  "@commonContact": {
+    "description": "Contact link in the navigation drawer footer."
+  },
+  "commonRetry": "Réessayer",
+  "@commonRetry": {
+    "description": "Retry button shown on error states."
+  },
+  "commonRouteNotFound": "Page introuvable.",
+  "@commonRouteNotFound": {
+    "description": "Shown when a route/URL does not resolve to a page."
+  },
+
+  "errorNetwork": "Problème de connexion. Vérifiez votre réseau.",
+  "@errorNetwork": {
+    "description": "Customer-facing message for a network/connectivity failure."
+  },
+  "errorServer": "Erreur serveur. Réessayez plus tard.",
+  "@errorServer": {
+    "description": "Customer-facing message for a server-side API error."
+  },
+  "errorGeneric": "Erreur: {error}",
+  "@errorGeneric": {
+    "description": "Fallback customer-facing error message with the raw error detail.",
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+
+  "languageLabel": "Langue",
+  "@languageLabel": {
+    "description": "Label above the FR/EN language switcher in the drawer footer."
+  },
+  "languageFrench": "Français",
+  "@languageFrench": {
+    "description": "French option in the language switcher."
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English option in the language switcher."
+  },
+
+  "navSearchHint": "Que recherchez-vous ?",
+  "@navSearchHint": {
+    "description": "Placeholder text in the storefront search field."
+  },
+  "navSearchAction": "Recherche",
+  "@navSearchAction": {
+    "description": "Tooltip and semantic label for the storefront search action."
+  },
+  "navWishlist": "Favoris",
+  "@navWishlist": {
+    "description": "Tooltip and semantic label for the wishlist navigation action."
+  },
+  "navAccount": "Compte",
+  "@navAccount": {
+    "description": "Tooltip and semantic label for the account navigation action."
+  },
+  "navCart": "Panier",
+  "@navCart": {
+    "description": "Tooltip and semantic label for the cart navigation action."
+  },
+  "navHome": "Accueil",
+  "@navHome": {
+    "description": "Bottom navigation label for the home tab."
+  },
+  "navSearch": "Rechercher",
+  "@navSearch": {
+    "description": "Bottom navigation label for the search tab."
+  },
+  "navProfile": "Profil",
+  "@navProfile": {
+    "description": "Bottom navigation label for the profile/account tab."
+  },
+  "navCartItemsCount": "Nombre d'articles dans le panier {count}",
+  "@navCartItemsCount": {
+    "description": "Tooltip and semantic label for the cart navigation action when a count badge is visible.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "navBackHome": "Retour à l'accueil",
+  "@navBackHome": {
+    "description": "Semantic label for the storefront brand logo link back to home."
+  },
+  "navOpenMenu": "Ouvrir le menu",
+  "@navOpenMenu": {
+    "description": "Tooltip for the navigation drawer menu button when closed."
+  },
+  "navCloseMenu": "Fermer le menu",
+  "@navCloseMenu": {
+    "description": "Tooltip for the navigation drawer menu button when open."
+  },
+  "navCommercetoolsDemo": "Démo commercetools",
+  "@navCommercetoolsDemo": {
+    "description": "Drawer link to the commercetools demo lab."
+  },
+  "navHighlights": "Highlights",
+  "@navHighlights": {
+    "description": "Section header for promotional highlight links in the drawer."
+  },
+  "navNoActiveCategories": "Aucune catégorie active disponible.",
+  "@navNoActiveCategories": {
+    "description": "Empty state when the category drawer has no active categories."
+  },
+  "navNoActiveNavigation": "Aucune navigation active disponible.",
+  "@navNoActiveNavigation": {
+    "description": "Empty state when the managed navigation drawer has no entries."
+  },
+  "navCategoriesLoadError": "Impossible de charger les catégories.\n{error}",
+  "@navCategoriesLoadError": {
+    "description": "Error shown when the category list fails to load in the drawer.",
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+
+  "sportSegmentMen": "Homme",
+  "@sportSegmentMen": {
+    "description": "Sport storefront segment label for men."
+  },
+  "sportSegmentWomen": "Femme",
+  "@sportSegmentWomen": {
+    "description": "Sport storefront segment label for women."
+  },
+  "sportSegmentKids": "Enfant",
+  "@sportSegmentKids": {
+    "description": "Sport storefront segment label for kids."
+  },
+
+  "cmsBrowse": "Parcourir",
+  "@cmsBrowse": {
+    "description": "Generic label for browsing a CMS category/segment menu."
+  },
+  "cmsDiscover": "Découvrir",
+  "@cmsDiscover": {
+    "description": "Generic CMS call-to-action label."
+  },
+  "cmsViewAll": "Voir tout",
+  "@cmsViewAll": {
+    "description": "Generic CMS call-to-action to view all items."
+  },
+  "cmsShoes": "Chaussures",
+  "@cmsShoes": {
+    "description": "CMS sport category label for shoes."
+  },
+  "cmsClothing": "Vêtements",
+  "@cmsClothing": {
+    "description": "CMS sport category label for clothing."
+  },
+  "cmsAccessories": "Accessoires",
+  "@cmsAccessories": {
+    "description": "CMS sport category label for accessories."
+  },
+  "cmsNikeTrendingNow": "En ce moment",
+  "@cmsNikeTrendingNow": {
+    "description": "Nike/Sport CMS carousel heading for currently featured items."
+  },
+  "cmsNikeChooseYourAdventure": "Choisis ton aventure",
+  "@cmsNikeChooseYourAdventure": {
+    "description": "Nike/Sport CMS carousel heading for adventure activity links."
+  },
+  "cmsNikeSummerEssentials": "Articles d'été",
+  "@cmsNikeSummerEssentials": {
+    "description": "Nike/Sport CMS tile label for summer essentials."
+  },
+  "cmsNikeBallonDOrPack": "Pack Ballon d'Or",
+  "@cmsNikeBallonDOrPack": {
+    "description": "Nike/Sport CMS tile label for the Ballon d'Or pack."
+  },
+  "cmsNikeIconicStyles": "Modèles iconiques",
+  "@cmsNikeIconicStyles": {
+    "description": "Nike/Sport CMS carousel heading for iconic product styles."
+  },
+  "cmsNikeOurBrands": "Nos marques",
+  "@cmsNikeOurBrands": {
+    "description": "Nike/Sport CMS carousel heading for brand links."
+  },
+
+  "searchTitle": "Recherche",
+  "@searchTitle": {
+    "description": "Search results page heading when there is no query yet."
+  },
+  "searchTitleWithQuery": "Résultats pour \"{query}\"",
+  "@searchTitleWithQuery": {
+    "description": "Search results page heading for a given query.",
+    "placeholders": {
+      "query": { "type": "String" }
+    }
+  },
+  "searchPrompt": "Entrez un terme de recherche.",
+  "@searchPrompt": {
+    "description": "Prompt shown before the visitor has entered a search term."
+  },
+  "searchSuggestionsTitle": "Meilleures suggestions",
+  "@searchSuggestionsTitle": {
+    "description": "Section title above live product-name suggestions on the search entry screen."
+  },
+  "searchEmptyResults": "Aucun résultat pour \"{query}\".",
+  "@searchEmptyResults": {
+    "description": "Shown when a search returns no products.",
+    "placeholders": {
+      "query": { "type": "String" }
+    }
+  },
+  "searchResultCountSuffix": "{count, plural, =1{ produit} other{ produits}}",
+  "@searchResultCountSuffix": {
+    "description": "Pluralized noun suffix (with leading space) after the bold result count, e.g. ' produits'.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "searchSortNewest": "Nouveautés",
+  "@searchSortNewest": {
+    "description": "Search sort option: newest first."
+  },
+  "searchSortNameAsc": "Nom A-Z",
+  "@searchSortNameAsc": {
+    "description": "Search sort option: name ascending."
+  },
+  "searchSortNameDesc": "Nom Z-A",
+  "@searchSortNameDesc": {
+    "description": "Search sort option: name descending."
+  },
+  "searchPagination": "Page {current} / {total}",
+  "@searchPagination": {
+    "description": "Pagination indicator on the search results page.",
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "homeCatalogLoadErrorTitle": "Impossible de charger le catalogue",
+  "homeCatalogLoadErrorMessage": "Le storefront attend une catégorie active dans PocketBase. Utilisez le backoffice admin pour importer un CSV de démo ou vérifier la connexion API.",
+  "homeOpenBackoffice": "Ouvrir le backoffice",
+  "homeNoActiveCategoriesTitle": "Aucune catégorie active",
+  "homeNoActiveCategoriesMessage": "Importez un catalogue depuis la route admin pour alimenter les collections PocketBase avant d'ouvrir le storefront.",
+  "homeImportData": "Importer des données",
+  "homeCatalogUnavailableTitle": "Catalogue momentanément indisponible",
+  "@homeCatalogUnavailableTitle": {
+    "description": "Sober public-facing title when the catalogue fails to load (non edit-mode)."
+  },
+  "homeCatalogUnavailableMessage": "Réessayez dans un instant.",
+  "@homeCatalogUnavailableMessage": {
+    "description": "Sober public-facing body when the catalogue fails to load (non edit-mode)."
+  },
+  "homeEmptyPublicTitle": "Bientôt disponible",
+  "@homeEmptyPublicTitle": {
+    "description": "Sober public-facing title when no product/category is available yet (non edit-mode)."
+  },
+  "homeEmptyPublicMessage": "De nouveaux produits arrivent très bientôt.",
+  "@homeEmptyPublicMessage": {
+    "description": "Sober public-facing body when the catalogue is genuinely empty (no requested category, non edit-mode)."
+  },
+  "homeCategoryUnavailableTitle": "Page indisponible",
+  "@homeCategoryUnavailableTitle": {
+    "description": "Sober public-facing title when a requested category/URL is unknown or inactive (non edit-mode)."
+  },
+  "homeCategoryUnavailableMessage": "Cette sélection n'est pas disponible pour le moment.",
+  "@homeCategoryUnavailableMessage": {
+    "description": "Sober public-facing body when a requested category/URL is unknown or inactive (non edit-mode)."
+  },
+
+  "plpCatalogueFallbackTitle": "Catalogue",
+  "plpFiltersComingSoon": "Filtres et tri bientôt disponibles.",
+  "plpBackToPreviousLevel": "Retour au niveau précédent",
+  "plpProductsCount": "{count, plural, =1{{count} article} other{{count} articles}}",
+  "@plpProductsCount": {
+    "description": "Count of products shown under the editorial PLP header.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "plpFilterAndSort": "Filtrer et trier",
+
+  "productCardNewBadge": "Nouveauté",
+  "@productCardNewBadge": {
+    "description": "Badge shown on a product card when the product is recent."
+  },
+  "productCardLatestReleases": "Dernières sorties",
+  "@productCardLatestReleases": {
+    "description": "Sport product card label shown for recently released products."
+  },
+  "productCardFavoritesUnavailable": "Favoris bientôt disponibles.",
+  "@productCardFavoritesUnavailable": {
+    "description": "Snackbar shown when the not-yet-wired product-card favorite action is tapped."
+  },
+
+  "pdpPriceUnavailable": "Prix indisponible",
+  "pdpTabDescription": "Description",
+  "pdpTabSizeAndFit": "Taille & coupe",
+  "pdpTabSizeAndFitInfo": "Information Taille & Coupe",
+  "pdpTabShippingAndReturns": "Livraison & retours",
+  "pdpTabShippingAndReturnsLong": "Livraison & Retours",
+  "pdpDescriptionEmpty": "Aucune description détaillée n’est renseignée pour le moment.",
+  "pdpShowMore": "Voir plus",
+  "pdpShowLess": "Voir moins",
+  "pdpSizingCategory": "Informations de taille et de coupe adaptées à la catégorie {type}.",
+  "@pdpSizingCategory": {
+    "description": "Sizing bullet referencing the product type/category.",
+    "placeholders": { "type": { "type": "String" } }
+  },
+  "pdpSizingSilhouette": "Coupe pensée pour une silhouette {type}.",
+  "@pdpSizingSilhouette": {
+    "description": "Sizing sentence describing the cut for a given silhouette/type (lowercased).",
+    "placeholders": { "type": { "type": "String" } }
+  },
+  "pdpSizingBrandUniverse": "Développé dans l’univers {brand} avec une ligne volontairement épurée.",
+  "@pdpSizingBrandUniverse": {
+    "description": "Sizing sentence referencing the brand universe.",
+    "placeholders": { "brand": { "type": "String" } }
+  },
+  "pdpSizingDimensionsVary": "Les dimensions et le poids peuvent varier selon la matière du produit.",
+  "pdpSizingSizeUpAdvice": "Si vous hésitez entre deux tailles, choisissez la plus grande pour un porté plus souple.",
+  "pdpShippingReturnsTitle": "Retours et échanges offerts",
+  "pdpShippingReturnsBody": "Vous avez la possibilité de retourner ou d’échanger tout produit commandé dans un délai de 30 jours à compter de sa réception, à condition que le produit soit retourné dans son état d’origine.",
+  "pdpShippingFaqHint": "Pour plus d’informations, consultez notre FAQ.",
+  "pdpShippingFreeTitle": "Livraison offerte",
+  "pdpShippingFreeBody": "Plusieurs modes de livraison rapides et sécurisés sont proposés selon votre adresse et les disponibilités du produit. Les délais sont estimés à partir de l’expédition de votre commande.",
+  "pdpShippingDispatchTitle": "Expédition sous 24h",
+  "pdpShippingDispatchBody": "Les commandes effectuées avant midi sont préparées et envoyées le même jour sous condition de disponibilité du stock.",
+  "pdpShippingSummary": "Livraison à domicile sous 1 à 3 jours ouvrés. Retours et échanges gratuits en boutique. Click & Collect disponible selon le stock des points de vente.",
+  "pdpChapterLabel": "Chapitre {position}",
+  "@pdpChapterLabel": {
+    "description": "Narrative PDP chapter label, e.g. 'Chapitre 2'.",
+    "placeholders": { "position": { "type": "int" } }
+  },
+  "pdpProgressCount": "{current} / {total}",
+  "@pdpProgressCount": {
+    "description": "Narrative progress indicator, e.g. '2 / 5'.",
+    "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "pdpSizeGuideTitle": "Guide des tailles",
+  "pdpSizeGuideBody": "Choisissez votre taille habituelle. Si vous hésitez entre deux tailles, privilégiez la plus grande pour un porté plus fluide.",
+  "pdpMaterialDetailsTitle": "Détails matière",
+  "pdpMaterialDetailsEmpty": "Aucun détail matière supplémentaire pour ce produit.",
+  "pdpReference": "Référence : {code}",
+  "@pdpReference": {
+    "description": "Product reference/SKU label on the narrative PDP.",
+    "placeholders": { "code": { "type": "String" } }
+  },
+  "pdpSelectYourSize": "Sélectionnez votre taille",
+  "pdpSizeGuideLink": "Guide des tailles",
+  "pdpAddToCart": "Ajouter au panier",
+  "pdpAddedToCart": "Ajouté",
+  "pdpAddToCartRetry": "Échec, réessayez",
+  "pdpReserveInStore": "Réserver en boutique",
+  "pdpCrossSellsTitle": "Vous aimerez aussi",
+  "pdpRecentlyViewed": "Consulté récemment",
+  "pdpExpressCheckout": "Paiement express",
+  "pdpCartMissingCurrency": "Devise du produit manquante",
+  "pdpCartCurrencyMismatch": "Devise différente, créez un autre panier",
+  "pdpCartAddFailed": "Impossible d'ajouter au panier",
+  "pdpCartAddedSyncFailed": "Produit ajouté, impossible de synchroniser le panier",
+
+  "cartEditQuantityTitle": "Modifier la quantité",
+  "cartQuantityTitle": "Quantité",
+  "cartQuantityLabelLong": "Qté : {quantity}",
+  "@cartQuantityLabelLong": {
+    "description": "Quantity row label in the luxe cart quantity sheet (with colon separator).",
+    "placeholders": { "quantity": { "type": "int" } }
+  },
+  "cartQuantityLabelShort": "Qté {quantity}",
+  "@cartQuantityLabelShort": {
+    "description": "Compact quantity label for the sport quantity sheet rows and the line-item selector.",
+    "placeholders": { "quantity": { "type": "int" } }
+  },
+  "cartRemoveItem": "Retirer l'article",
+  "cartUpdateQuantityError": "Impossible de modifier la quantité.",
+  "cartRemoveItemError": "Impossible de supprimer l'article.",
+
+  "checkoutBack": "Retour",
+  "checkoutSignInTitle": "Se connecter",
+  "checkoutSignInSubtitle": "Veuillez vous connecter ou continuer en tant qu’invité(e)",
+  "checkoutCartAlreadyLinked": "Ce panier est déjà associé à un compte client.",
+  "checkoutSignInOptionSubtitle": "Veuillez vous connecter",
+  "checkoutCreateAccountTitle": "Créer un compte",
+  "checkoutCreateAccountSubtitle": "Vous n’avez pas encore de compte ?",
+  "checkoutGuestTitle": "Continuer sans créer de compte",
+  "checkoutGuestSubtitle": "Veuillez saisir votre adresse e-mail pour passer votre commande",
+  "checkoutEmailLabel": "* E-mail",
+  "checkoutPasswordLabel": "* Mot de passe",
+  "checkoutForgotPassword": "Mot de passe oublié ?",
+  "checkoutOrContinueWith": "Ou continuer avec",
+  "checkoutPrivacyNotice": "Avis de confidentialité",
+  "checkoutContinue": "Continuer",
+  "checkoutEmailInvalid": "Veuillez saisir une adresse e-mail valide.",
+  "checkoutEmptyCartTitle": "Votre panier est vide.",
+  "checkoutEmptyCartSubtitle": "Ajoutez un produit avant de finaliser votre commande.",
+  "checkoutContinueShopping": "Continuer mes achats",
+  "checkoutStepShippingAddress": "1. Adresse de livraison",
+  "checkoutStepShippingMethod": "2. Mode de livraison",
+  "checkoutStepBillingPayment": "3. Facturation et paiement",
+  "checkoutEnterShippingAddress": "Veuillez saisir votre adresse de livraison :",
+  "checkoutAddShippingAddress": "Ajouter une adresse de livraison",
+  "checkoutEdit": "Modifier",
+  "checkoutDeliveryIdentityNotice": "La présence du client, sa signature et une pièce d’identité sont requises pour la livraison.",
+  "checkoutChooseShippingMethod": "Choisir la méthode de livraison",
+  "checkoutEmailAddressLabel": "Adresse e-mail : {email}",
+  "@checkoutEmailAddressLabel": {
+    "description": "Guest checkout banner showing the email address used for the order.",
+    "placeholders": {
+      "email": { "type": "String", "example": "client@example.com" }
+    }
+  },
+  "checkoutEditEmail": "Modifier l’e-mail",
+  "checkoutOrderSummary": "Récapitulatif de la commande",
+  "checkoutItemCount": "{count, plural, =1{{count} produit} other{{count} produits}}",
+  "@checkoutItemCount": {
+    "description": "Number of items in the order summary header.",
+    "placeholders": {
+      "count": { "type": "int", "example": "2" }
+    }
+  },
+  "checkoutPackagingTitle": "Emballage et cadeaux",
+  "checkoutPackagingFreeOptions": "Options offertes",
+  "checkoutPackagingNoPricesNote": "Les prix et les factures ne sont pas envoyés avec les produits.",
+  "checkoutPackagingSignatureTitle": "Packaging signature {brand}",
+  "@checkoutPackagingSignatureTitle": {
+    "description": "Title of the signature packaging option; brand is the storefront brand name.",
+    "placeholders": {
+      "brand": { "type": "String", "example": "KIKI" }
+    }
+  },
+  "checkoutPackagingSignatureSubtitle": "L’emballage signature de {brand} est produit de manière responsable et certifié à base de plus de 90% de matériaux recyclés.",
+  "@checkoutPackagingSignatureSubtitle": {
+    "description": "Descriptive blurb for the signature packaging option; brand is the storefront brand name.",
+    "placeholders": {
+      "brand": { "type": "String", "example": "KIKI" }
+    }
+  },
+  "checkoutPackagingEcoTitle": "Eco Packaging",
+  "checkoutAddShoppingBag": "Ajouter un sac shopping {brand}",
+  "@checkoutAddShoppingBag": {
+    "description": "Toggle to add a branded shopping bag; brand is the storefront brand name.",
+    "placeholders": {
+      "brand": { "type": "String", "example": "KIKI" }
+    }
+  },
+  "checkoutGiftWrapTitle": "Offrir en cadeau",
+  "checkoutGiftWrapSubtitle": "Personnalisez gratuitement votre cadeau",
+  "checkoutTotal": "Total",
+  "checkoutSubtotal": "Sous-total",
+  "checkoutShipping": "Livraison",
+  "checkoutShippingEstimate": "Date de livraison et coûts estimés",
+  "checkoutTaxesIncluded": "Taxes incluses",
+  "checkoutOrPayWith": "ou payer avec",
+  "checkoutHelpServices": "Aide & Services",
+  "checkoutServiceSecurePayment": "Paiement 100% sécurisé",
+  "checkoutServiceSecurePaymentBody": "Vos informations de carte de crédit sont en sécurité chez nous. Toutes les informations sont protégées par la technologie SSL (Secure Sockets Layer).",
+  "checkoutServiceHelp": "Besoin d'aide ?",
+  "checkoutServiceHelpBody": "Nos conseillers accompagnent la commande, la personnalisation et le suivi de livraison.",
+  "checkoutServiceFreeShipping": "Livraison standard offerte",
+  "checkoutServiceFreeShippingBody": "La date de livraison et les coûts estimés sont confirmés à l'étape suivante.",
+  "checkoutServiceReturns": "Échange et remboursement",
+  "checkoutServiceReturnsBody": "Les retours et remboursements sont traités selon les conditions de vente applicables à la commande.",
+  "checkoutFooterPersonalData": "Données personnelles",
+  "checkoutFooterLegalNotice": "Mentions légales",
+
+  "accountBarrierLabel": "Fermer le compte",
+  "accountSignInTitle": "Se connecter",
+  "accountSignInSubtitle": "Pour accéder à votre compte",
+  "accountSignInPending": "La connexion client sera branchée prochainement.",
+  "accountRegisterTitle": "S'inscrire",
+  "accountRegisterSubtitle": "Vous n'avez pas de compte ?",
+  "accountRegisterPending": "La création de compte sera branchée prochainement.",
+  "accountOrderTrackingTitle": "Suivre votre commande",
+  "accountOrderTrackingSubtitle": "Soyez informé(e) des dernières mises à jour sur votre commande",
+  "accountOrderTrackingPending": "Le suivi de commande sera branché prochainement.",
+  "accountToolbarSearch": "Recherche",
+  "accountToolbarFavorites": "Favoris",
+  "accountToolbarMyAccount": "Mon compte",
+  "accountToolbarCart": "Panier",
+  "accountPrivacyNotice": "Avis de confidentialité",
+  "accountEmailLabel": "* E-mail",
+  "accountPasswordLabel": "* Mot de passe",
+  "accountForgotPassword": "Mot de passe oublié ?",
+  "accountSignInButton": "Me connecter",
+  "accountCreateAccountButton": "Créer un compte",
+  "accountOrderNumberLabel": "* Numéro de commande",
+  "accountContinueButton": "Continuer",
+  "accountOrDivider": "Ou",
+  "accountLinkedCopyLead": "Connectez-vous à votre compte ",
+  "@accountLinkedCopyLead": {
+    "description": "Lead-in sentence before the underlined brand name; keep the trailing space."
+  },
+  "accountBenefitOrderHistory": "Suivre vos commandes\net l'historique de vos\nachats",
+  "accountBenefitReturns": "Demander un retour ou\nun échange",
+  "accountBenefitWishlist": "Ajouter des articles à\nvotre wishlist",
+  "accountBenefitAdvisor": "Contacter votre\nconseiller",
+  "accountBenefitManageAccount": "Gérer les informations\nde votre compte et vos\nabonnements",
+  "pdpFoilTiltHint": "Touchez l’image ou inclinez le téléphone",
+  "pdpFoilEnableMotionHint": "Touchez pour activer le reflet"
+}

@@ -1,0 +1,13 @@
+name = "kiki-commerce-media-proxy"
+main = "src/index.js"
+compatibility_date = "2026-05-07"
+
+# CI only updates the existing Worker script. The production route is already
+# attached in Cloudflare and remains declared in wrangler.toml for manual,
+# route-aware deploys.
+workers_dev = false
+
+# Must mirror wrangler.toml — CI deploys without route mutation but still
+# updates the script + bindings, so the var must be present here too.
+[vars]
+ORIGIN = "https://kiki-commerce.pockethost.io"
