@@ -1,117 +1,142 @@
-# Kiki's Commerce
+# Kiki Commerce
 
-Storefront Flutter branché sur PocketBase, avec un backoffice admin pour :
+Une expérience e-commerce éditoriale construite avec **Flutter Web**, pilotée
+par un CMS PocketBase et déployée sur Cloudflare.
 
-- importer un CSV catalogue dénormalisé vers les collections `products`, `categories`, `categoryProducts`, `priceRows`, `currencies`, `units`, `medias`, `mediaContainers`
-- éditer chaque collection depuis une interface unique
-- naviguer rapidement entre les records liés
+[Voir la démo](https://kikicommerce.com) ·
+[Explorer l’architecture](ARCHITECTURE.md) ·
+[Lire l’audit performance](docs/audit_jank.md)
+
+![Aperçu de la page d’accueil Kiki Commerce](docs/assets/storefront-home.jpg)
+
+## En un coup d’œil
+
+| | |
+|---|---|
+| **Frontend** | Flutter Web, Dart, Riverpod, GoRouter, rendu skwasm |
+| **Backend** | PocketBase, migrations versionnées, hooks JavaScript |
+| **Edge** | Cloudflare Pages et Workers, proxy média avec cache |
+| **Contenu** | Storefront et navigation pilotés par CMS, français et anglais |
+| **Qualité** | 1 409 tests Flutter, 31 tests JavaScript, analyse statique stricte |
+| **Périmètre** | Storefront, catalogue, PDP, panier, checkout UI et backoffice |
+
+> Projet personnel end-to-end : architecture, expérience utilisateur,
+> intégration backend, outillage éditorial, performance web et déploiement.
+
+## Ce que démontre le projet
+
+- **Un storefront réellement administrable** : pages, sections, navigation,
+  médias, produits et traductions se modifient sans redéployer le frontend.
+- **Une architecture maintenable** : les responsabilités UI, application,
+  domaine et accès aux données sont séparées et testées indépendamment.
+- **Une attention poussée à la performance** : listes lazy, préchargement
+  d’images ciblé, déduplication des requêtes, isolation des repaint et
+  animations adaptées au mode de mouvement réduit.
+- **Une expérience responsive travaillée** : parcours distincts desktop et
+  mobile, transitions PDP, navigation immersive et interactions panier.
+- **Un backoffice intégré** : import/export CSV, médiathèque, édition des
+  collections et prévisualisation des contenus.
+- **Une infrastructure reproductible** : schéma PocketBase versionné,
+  Workers testés et builds web release contrôlés.
+
+## Aperçus du parcours mobile
+
+<p align="center">
+  <img
+    src="docs/assets/cart-added.png"
+    width="42%"
+    alt="Confirmation d’ajout au panier sur une fiche produit"
+  />
+  <img
+    src="docs/assets/checkout.png"
+    width="42%"
+    alt="Récapitulatif du checkout mobile"
+  />
+</p>
+
+## Architecture
+
+```mermaid
+flowchart LR
+    UI["Présentation<br/>Flutter Web"] --> APP["Application<br/>use cases + providers"]
+    APP --> DOMAIN["Domaine<br/>entités + contrats"]
+    DATA["Data<br/>repositories + API clients"] --> DOMAIN
+    DATA --> PB["PocketBase<br/>catalogue + CMS + auth"]
+    DATA --> EDGE["Cloudflare Workers<br/>médias + laboratoire catalogue"]
+```
+
+Le projet suit une architecture en couches avec dépendances dirigées vers le
+domaine. Riverpod assure l’injection et la gestion d’état ; les repositories
+isolent PocketBase et les services externes du reste de l’application.
+
+Pour comprendre les choix structurants :
+
+- [Carte complète de l’architecture](ARCHITECTURE.md)
+- [Pourquoi Riverpod](docs/decisions/adr-001-riverpod.md)
+- [Pourquoi PocketBase](docs/decisions/adr-002-pocketbase.md)
+- [Modèle de sections CMS](docs/decisions/adr-003-cms-section-model.md)
+
+## Points techniques remarquables
+
+### Storefront piloté par CMS
+
+Les pages publiques sont composées de sections ordonnées et typées. Le moteur
+de rendu transforme leur configuration PocketBase en widgets spécialisés :
+hero campaigns, carrousels, grilles de produits, tuiles de catégories,
+chapitres narratifs et segments de marque.
+
+### Panier guest fiable
+
+Le chemin principal utilise des routes PocketBase dédiées avec transaction et
+clé d’idempotence. Les lectures locales sont mises en cache et les mutations
+restent synchronisées avec l’interface, y compris pendant les animations
+d’ajout au panier.
+
+### Performance web mesurée
+
+La production utilise **dart2wasm + skwasm**. Les surfaces sensibles suivent
+des règles explicites : aucune lecture géométrique coûteuse par frame, images
+above-the-fold préchargées, longues listes construites paresseusement et
+animations non essentielles désactivées lorsque l’utilisateur le demande.
+
+- [Méthode de profilage](docs/dev/storefront_performance_profiling.md)
+- [Sécurité du cycle de vie skwasm](docs/dev/skwasm_gpu_resource_disposal.md)
+- [Performance des shaders](docs/dev/shader_animation_performance.md)
+
+### Administration et contenu
+
+Le backoffice accessible sous `/admin` permet de gérer le catalogue et le CMS,
+d’importer un catalogue CSV, d’optimiser les médias avant upload et d’éditer les
+traductions. Les changements de schéma passent par des migrations PocketBase
+versionnées.
 
 ## Lancer le projet
+
+### Prérequis
+
+- Flutter 3.44.4 ou version compatible
+- Dart 3.11+
+- Chrome
+
+### Développement
 
 ```bash
 flutter pub get
 flutter run -d chrome
 ```
 
-Routes utiles :
+La configuration de développement utilise par défaut l’instance PocketBase de
+démonstration. Les origines peuvent être remplacées avec des
+`--dart-define`.
 
-- `/` : storefront. La home charge automatiquement la première catégorie active.
-- `/admin` : backoffice admin PocketBase.
-
-## Variables d'environnement (`--dart-define`)
-
-| Variable | Défaut | Description |
+| Variable | Valeur par défaut | Rôle |
 |---|---|---|
-| `API_BASE_URL` | `https://kiki-commerce.pockethost.io` | Origine PocketBase pour toutes les lectures et mutations. |
-| `MEDIA_BASE_URL` | _(non défini → fallback `API_BASE_URL`)_ | Origine CDN pour les URLs médias publiques. **Obligatoire en prod** : `ApiConfig.assertMediaConfigured` lève en `kReleaseMode` si la valeur n'est pas fournie au build. |
-| `USE_CART_ADD_ENDPOINT` | `true` | Bascule entre la route panier custom (`POST /api/cart/add-item`) et le flow legacy. |
-| `ENABLE_NAVBAR_SHADERS` | `false` | Active les runtime-shaders de la navbar Sport (anneau Home multipasse et loupe Search). Désactivé par défaut : Home et Search utilisent de simples icônes Material, sans anneau, loupe custom ni découpe optique. |
-| `ENABLE_MOBILE_WEB_IRIDESCENT_FEEDBACK` | `false` | Réactive le feedback shader texturé du bouton Accueil sous 768 px pour un A/B contrôlé, uniquement si `ENABLE_NAVBAR_SHADERS=true`. Le défaut statique évite ce runtime-effect pendant l'isolation du crash skwasm mobile. |
+| `API_BASE_URL` | `https://kiki-commerce.pockethost.io` | API PocketBase |
+| `MEDIA_BASE_URL` | fallback sur l’API | CDN public des médias |
+| `USE_CART_ADD_ENDPOINT` | `true` | Route panier transactionnelle |
+| `ENABLE_NAVBAR_SHADERS` | `false` | Effets GPU expérimentaux de navigation |
 
-Exemple de build prod :
-
-```bash
-flutter build web --release --wasm \
-  --dart-define=API_BASE_URL=https://kiki-commerce.pockethost.io \
-  --dart-define=MEDIA_BASE_URL=https://kikicommerce.com/img
-```
-
-Le build web de production utilise le renderer **skwasm** (`--wasm` = dart2wasm +
-skwasm). Le build CanvasKit (dart2js) provoquait du jank généralisé sur cette app
-lourde en shaders/animations, d'où le retour à skwasm pour la performance.
-**Compromis connu :** skwasm réintroduit le freeze mobile empty-PLP → Home
-(risque ouvert, à corriger côté skwasm — upgrade Flutter / workaround ciblé),
-documenté dans
-[`docs/incidents/2026-07-09-skwasm-paragraph-relayout-freeze.md`](docs/incidents/2026-07-09-skwasm-paragraph-relayout-freeze.md).
-
-Sans `MEDIA_BASE_URL` au build prod, le binaire échouera au démarrage avec un `StateError` clair plutôt que de servir silencieusement les images depuis PocketBase.
-
-## CI / déploiement
-
-- **`Quality Gate`** (`.github/workflows/quality.yml`) — `flutter pub get`, `flutter analyze`, `flutter test`, `dart format --set-exit-if-changed`, `node --check` du worker. Tourne sur PR + push `main`.
-- **`Deploy Flutter Web to Cloudflare Pages`** (`.github/workflows/deploy.yml`) — se déclenche **uniquement** sur succès du Quality Gate via `workflow_run`. Skippe si le seul changement concerne le worker.
-- **`Deploy Media Worker to Cloudflare`** (`.github/workflows/deploy-media-worker.yml`) — déploie le Worker quand `cloudflare/media-proxy-worker/**` change.
-
-Secrets attendus côté GitHub : `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
-
-## Backoffice admin
-
-Le backoffice permet deux modes d'authentification :
-
-- jeton admin PocketBase
-- email + mot de passe `_superusers`
-
-Une fois connecté :
-
-- chargez le CSV exemple
-- importez-le pour hydrater les 8 collections
-- éditez les records collection par collection
-
-Le CSV d'exemple se trouve ici :
-
-- `assets/admin/sample_catalog.csv`
-
-Il crée :
-
-- 3 catégories
-- 6 produits
-- leurs médias et mediaContainers
-- leurs liaisons `categoryProducts`
-- 1 devise et 1 unité
-- 6 lignes de prix
-
-## Cart custom routes
-
-Les flows panier guest utilisent des routes PocketBase custom pour éviter que
-le client orchestre les écritures sensibles ligne par ligne :
-
-- hook JS : `pocketbase/pb_hooks/main.pb.js` (route + duplication actuelle)
-- module isolé : `pocketbase/pb_hooks/cart_add_item.js`
-- module clear : `pocketbase/pb_hooks/cart_clear.js`
-- persistance d'idempotence : `pocketbase/pb_migrations/1776800120_create_cart_add_idempotency.js`
-
-Le client Flutter active le chemin add-item par défaut. Pour forcer
-temporairement le legacy flow côté app :
-
-```bash
-flutter run -d chrome --dart-define=USE_CART_ADD_ENDPOINT=false
-```
-
-Le rollout attendu est :
-
-1. déployer les migrations + `pb_hooks`
-2. valider les routes `POST /api/cart/add-item` et `POST /api/cart/clear`
-3. déployer le frontend avec le flag par défaut, ou forcer `USE_CART_ADD_ENDPOINT=true`
-
-## Media CDN proxy
-
-Par défaut, l'API et les médias pointent vers PocketBase :
-
-```bash
-flutter run -d chrome
-```
-
-En production, les URLs médias publiques passent par le proxy Cloudflare :
+### Build web de production
 
 ```bash
 flutter build web --release --wasm \
@@ -119,54 +144,68 @@ flutter build web --release --wasm \
   --dart-define=MEDIA_BASE_URL=https://kikicommerce.com/img
 ```
 
-Le proxy média mappe :
+## Qualité
+
+```bash
+flutter analyze --fatal-infos --fatal-warnings
+flutter test
+dart format --output=none --set-exit-if-changed lib test
+
+node --test \
+  test/pocketbase/cart_add_item_hook_test.js \
+  test/pocketbase/cart_clear_hook_test.js
+
+cd workers/kiki-ct-catalog-proxy
+npm ci
+npm test
+```
+
+État du snapshot publié :
+
+- analyse Flutter sans erreur ni avertissement ;
+- **1 409 tests Flutter** réussis ;
+- **9 tests PocketBase** et **22 tests Worker** réussis ;
+- build web release skwasm réussi.
+
+## Structure du dépôt
 
 ```text
-https://kikicommerce.com/img/api/files/{collectionId}/{recordId}/{filename}?thumb=600x800f&v=...
+lib/
+├── presentation/   écrans, widgets et providers UI
+├── application/    cas d’usage et ports
+├── domain/         entités et règles métier
+├── data/           repositories et clients API
+├── admin/          backoffice catalogue et CMS
+└── features/       expérimentations isolées
+
+pocketbase/
+├── pb_migrations/  schéma et évolutions versionnées
+└── pb_hooks/       routes serveur du panier
+
+cloudflare/          proxy média edge
+workers/             intégrations Worker isolées
+test/                tests unitaires, widgets et intégration
 ```
 
-vers :
+## État et limites connues
 
-```text
-https://kiki-commerce.pockethost.io/api/files/{collectionId}/{recordId}/{filename}?thumb=600x800f&v=...
-```
+- Le checkout présente le parcours et ses états UI ; aucun paiement réel n’est
+  déclenché.
+- Le connecteur commercetools reste un laboratoire isolé du catalogue
+  principal.
+- Un incident skwasm mobile est documenté et suivi :
+  [empty-PLP → Home](docs/incidents/2026-07-09-skwasm-paragraph-relayout-freeze.md).
+- Les collections CMS publiques ne doivent contenir aucune donnée sensible.
 
-L'origine PocketBase du worker est lue depuis le binding `[vars] ORIGIN` déclaré dans `cloudflare/media-proxy-worker/wrangler.toml` et `wrangler.ci.toml`. Override ponctuel :
+## Documentation
 
-```bash
-npx wrangler deploy --var ORIGIN=https://staging-pb.example.com
-```
+- [Schéma PocketBase](docs/pocketbase-schema.md)
+- [Navigation PLP/PDP](docs/plp_parent_navigation.md)
+- [Changement de thème storefront](docs/storefront_theme_switch.md)
+- [Usage des API Flutter](docs/flutter-api-usage.md)
 
-Déploiement manuel standard :
+---
 
-```bash
-cd cloudflare/media-proxy-worker
-npx wrangler deploy
-```
-
-### Smoke test post-deploy
-
-```bash
-curl -I 'https://kikicommerce.com/img/api/files/<collection>/<record>/<file>.jpg?thumb=600x800f'
-```
-
-Attendu :
-
-- `HTTP 200`, `cf-cache-status: HIT` (au second appel) ou `MISS` (premier appel)
-- `x-kiki-media-proxy: cloudflare-cache`
-- `cache-control: max-age=2592000, stale-while-revalidate=86400`
-
-Un 404 doit revenir avec `cache-control: no-store` (sinon une URL périmée resterait coincée au CDN).
-
-## Configurations CMS publiques
-
-Les collections suivantes sont **publiques en lecture** (`listRule: ''`, `viewRule: ''`) — c'est intentionnel pour permettre au storefront de charger ses sections sans token :
-
-- `cms_pages`, `page_sections`
-- `navigation_menus`, `navigation_items`
-- `drawer_navigation_*`
-- `storefront_settings` (clé `brand`)
-
-Conséquence : **ne jamais stocker de données sensibles dans la `config` JSON** d'une section CMS ou d'un item de navigation. Tout ce qui est saisi y est lisible publiquement par n'importe quel client.
-
-Pour les données sensibles (clés API, configurations admin, etc.), utiliser une collection dédiée avec des règles d'accès restreintes.
+Conçu comme un démonstrateur de commerce composable, avec une priorité donnée à
+la qualité de l’expérience, à la lisibilité de l’architecture et à la mesure
+des performances.
